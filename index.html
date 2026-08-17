@@ -1,0 +1,1832 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#fff1f6" />
+  <title>Pink Memory ♡</title>
+  <style>
+    :root{
+      --bg:#fff8fb;
+      --panel:rgba(255,255,255,.86);
+      --pink:#ff6f9f;
+      --pink2:#ff9fbd;
+      --pink3:#ffd8e6;
+      --text:#402b35;
+      --muted:#927984;
+      --line:#f3d9e3;
+      --shadow:0 18px 50px rgba(205,91,132,.16);
+      --radius:24px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Inter,Arial,sans-serif;color:var(--text);background:
+      radial-gradient(circle at 12% 6%,#ffe6ef 0 12%,transparent 34%),
+      radial-gradient(circle at 92% 16%,#ffe9f2 0 10%,transparent 28%),
+      linear-gradient(180deg,#fffafd 0%,#fff5f9 100%);
+    }
+    body{min-height:100vh}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{width:min(100%,560px);margin:0 auto;min-height:100vh;padding:18px 16px 90px;position:relative}
+    .hide{display:none!important}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 18px}
+    .brand{font-weight:900;letter-spacing:.2px;font-size:18px}
+    .brand span{color:var(--pink)}
+    .mini-btn,.ghost-btn,.primary-btn,.soft-btn,.danger-btn{
+      border:none;border-radius:999px;padding:11px 16px;font-weight:800;transition:.18s transform,.18s opacity,.18s box-shadow
+    }
+    button:active{transform:scale(.97)}
+    .mini-btn,.ghost-btn{background:#fff;color:var(--text);box-shadow:0 8px 28px rgba(90,44,62,.08)}
+    .primary-btn{background:linear-gradient(135deg,var(--pink),#ff8db2);color:white;box-shadow:0 12px 30px rgba(255,111,159,.28)}
+    .soft-btn{background:#fff0f5;color:#c94d79}
+    .danger-btn{background:#fff0f0;color:#c44747}
+    .wide{width:100%}
+    .hero{
+      background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,243,248,.94));
+      border:1px solid rgba(255,255,255,.9);
+      box-shadow:var(--shadow);border-radius:32px;padding:26px 22px;overflow:hidden;position:relative
+    }
+    .hero:after{content:"♡";position:absolute;right:-8px;top:-30px;font-size:120px;color:#ffd4e2;transform:rotate(12deg)}
+    .eyebrow{font-size:12px;font-weight:900;letter-spacing:1.6px;color:#cf668a;text-transform:uppercase}
+    h1{font-size:34px;line-height:1.08;margin:8px 0 12px;letter-spacing:-1.2px}
+    h2{font-size:25px;margin:0 0 8px}
+    h3{margin:0;font-size:17px}
+    p{line-height:1.65}
+    .muted{color:var(--muted)}
+    .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;position:relative;z-index:2}
+    .stats{display:flex;gap:10px;margin-top:14px}
+    .stat{flex:1;background:rgba(255,255,255,.72);border:1px solid #f7e3ea;border-radius:18px;padding:13px}
+    .stat b{display:block;font-size:20px}
+    .stat small{color:var(--muted)}
+    .section-title{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:26px 2px 12px}
+    .section-title p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+    .panel{background:var(--panel);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow);border-radius:var(--radius);padding:18px;margin-bottom:14px;backdrop-filter:blur(12px)}
+    label{display:block;font-size:12px;font-weight:900;color:#785c68;margin:0 0 7px}
+    input,select,textarea{
+      width:100%;border:1px solid var(--line);background:#fff;border-radius:16px;padding:13px 14px;outline:none;color:var(--text)
+    }
+    input:focus,select:focus,textarea:focus{border-color:#ff9fbd;box-shadow:0 0 0 4px #ffeaf1}
+    textarea{resize:vertical;min-height:74px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .field{margin-bottom:12px}
+    .memory-editor{position:relative}
+    .editor-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .badge{font-size:11px;font-weight:900;color:#c44d78;background:#fff0f5;padding:7px 10px;border-radius:999px}
+    .photo-upload{
+      border:1.5px dashed #efbfd0;border-radius:18px;background:#fff8fb;padding:12px;min-height:92px;
+      display:flex;align-items:center;justify-content:center;text-align:center;color:#a57c8c;font-size:13px;position:relative;overflow:hidden
+    }
+    .photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+    .preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}
+    .preview-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;border:2px solid white;box-shadow:0 4px 14px rgba(83,35,53,.08)}
+    .creator-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:sticky;bottom:14px;z-index:20;padding-top:8px}
+    .stage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .stage-card{
+      border:none;background:white;border-radius:24px;padding:0;overflow:hidden;text-align:left;box-shadow:0 12px 32px rgba(137,64,91,.12);position:relative
+    }
+    .stage-cover{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:
+      linear-gradient(145deg,#ffdce8,#ffeef4);position:relative;overflow:hidden}
+    .stage-cover img{width:100%;height:100%;object-fit:cover}
+    .stage-cover .locked-heart{font-size:44px;color:#ff8eb3;filter:drop-shadow(0 8px 15px rgba(255,103,155,.25))}
+    .stage-cover:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(56,24,35,.24));pointer-events:none}
+    .stage-num{position:absolute;left:10px;top:10px;color:#b94d73;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:6px 9px;font-size:11px;font-weight:900;z-index:2}
+    .stage-status{position:absolute;right:10px;top:10px;background:rgba(255,255,255,.9);border-radius:999px;padding:6px 9px;font-size:10px;font-weight:900;z-index:2}
+    .stage-info{padding:12px 13px 14px}
+    .stage-info small{color:var(--muted);display:block;margin-top:4px}
+    .progress-wrap{margin:16px 0 4px}
+    .progress-row{display:flex;justify-content:space-between;font-size:12px;font-weight:900;margin-bottom:7px}
+    .progress-bar{height:10px;background:#f5dce6;border-radius:99px;overflow:hidden}
+    .progress-bar i{display:block;height:100%;background:linear-gradient(90deg,#ff7aa7,#ffa8c4);border-radius:99px;transition:.35s width}
+    .complete-banner{
+      margin:16px 0;padding:18px;border-radius:22px;background:linear-gradient(135deg,#fff,#ffe8f0);box-shadow:var(--shadow);
+      border:1px solid #ffe1ec;text-align:center
+    }
+    .complete-banner .big{font-size:34px;font-weight:1000;color:#e85d8d}
+    .modal{position:fixed;inset:0;background:rgba(52,28,37,.38);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+    .sheet{width:min(100%,560px);max-height:94vh;overflow:auto;background:#fffafd;border-radius:30px 30px 0 0;padding:16px 16px max(22px,env(safe-area-inset-bottom));box-shadow:0 -18px 60px rgba(67,31,45,.2)}
+    .sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .close{width:40px;height:40px;border-radius:50%;border:none;background:white;box-shadow:0 7px 20px rgba(80,36,53,.1);font-size:20px}
+    .game-frame{border-radius:26px;background:#fff;box-shadow:var(--shadow);padding:16px;overflow:hidden}
+    .game-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+    .game-meta b{font-size:14px}
+    .game-meta span{font-size:12px;color:var(--muted)}
+    .game-actions{display:flex;gap:9px;margin-top:14px}
+    .game-actions button{flex:1}
+    .puzzle{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#f8dce6}
+    .tile{border:none;border-radius:5px;background-repeat:no-repeat;transition:.12s transform;min-width:0}
+    .tile:active{transform:scale(.96)}
+    .tile.blank{background:#fceaf0!important;box-shadow:inset 0 0 0 1px #f5d8e3}
+    .heart-game{
+      position:relative;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:#f6dfe7 center/cover no-repeat
+    }
+    .heart-game:after{content:"";position:absolute;inset:0;background:rgba(255,238,245,.08);pointer-events:none}
+    .blur-layer{position:absolute;inset:-12px;background:center/cover no-repeat;filter:blur(var(--blur,18px));transform:scale(1.08);transition:.25s filter}
+    .tap-heart{position:absolute;z-index:4;width:64px;height:64px;border:none;border-radius:50%;font-size:34px;background:rgba(255,255,255,.92);box-shadow:0 10px 28px rgba(118,44,72,.25);animation:pop .3s ease}
+    @keyframes pop{from{transform:scale(.5);opacity:.2}to{transform:scale(1);opacity:1}}
+    .timer-pill{position:absolute;left:12px;top:12px;z-index:5;background:rgba(255,255,255,.9);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900}
+    .flip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .flip-card{aspect-ratio:3/4;perspective:700px;border:none;background:none;padding:0}
+    .flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:.35s transform}
+    .flip-card.flipped .flip-inner,.flip-card.matched .flip-inner{transform:rotateY(180deg)}
+    .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;overflow:hidden}
+    .flip-back{background:linear-gradient(145deg,#ff9fbd,#ffd1df);display:flex;align-items:center;justify-content:center;font-size:24px;color:white}
+    .flip-front{transform:rotateY(180deg);background-repeat:no-repeat;background-color:#f5dce5;border:2px solid white}
+    .reveal-card{text-align:center}
+    .reveal-photo{border-radius:24px;overflow:hidden;box-shadow:var(--shadow);background:#f8e9ef}
+    .reveal-photo img{display:block;width:100%;max-height:52vh;object-fit:cover}
+    .clear-title{font-size:44px;margin:14px 0 2px;font-weight:1000;letter-spacing:-2px;color:#ef6695}
+    .clear-meta{font-weight:800}
+    .clear-note{color:var(--muted);margin:8px 0 18px}
+    .book-shell{position:relative}
+    .book-page{
+      background:white;border-radius:28px;padding:14px;box-shadow:var(--shadow);margin:0 0 16px;border:1px solid #fff;
+      scroll-margin-top:14px
+    }
+    .photo-grid{display:grid;gap:5px;border-radius:20px;overflow:hidden;background:#f6e4eb}
+    .photo-grid img{width:100%;height:100%;object-fit:cover;display:block}
+    .photo-grid.count-1{grid-template-columns:1fr}
+    .photo-grid.count-1 img{aspect-ratio:4/5}
+    .photo-grid.count-2{grid-template-columns:1fr 1fr}
+    .photo-grid.count-2 img{aspect-ratio:3/4}
+    .photo-grid.count-3{grid-template-columns:1.2fr .8fr;grid-template-rows:1fr 1fr}
+    .photo-grid.count-3 img{min-height:150px}
+    .photo-grid.count-3 img:first-child{grid-row:1/3}
+    .photo-grid.count-4{grid-template-columns:1fr 1fr}
+    .photo-grid.count-4 img{aspect-ratio:1/1}
+    .page-caption{padding:14px 5px 4px}
+    .page-caption .date{font-size:12px;color:#bd6684;font-weight:900;letter-spacing:.6px}
+    .page-caption h3{font-size:20px;margin:4px 0}
+    .page-caption p{margin:4px 0;color:var(--muted);font-size:14px}
+    .empty{padding:36px 18px;text-align:center;color:var(--muted)}
+    .toast{
+      position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#4f3540;color:white;
+      padding:11px 16px;border-radius:999px;z-index:500;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap;font-size:13px;font-weight:800
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .confetti-heart{position:fixed;z-index:300;pointer-events:none;font-size:22px;animation:floatHeart 1.4s ease-out forwards}
+    @keyframes floatHeart{0%{transform:translateY(0) scale(.6) rotate(0);opacity:0}15%{opacity:1}100%{transform:translateY(-180px) scale(1.4) rotate(25deg);opacity:0}}
+    .helper{font-size:11px;color:#9d8290;margin-top:6px}
+    .seg{display:flex;background:#f8e7ee;border-radius:999px;padding:4px;gap:4px;margin:12px 0}
+    .seg button{flex:1;border:none;background:transparent;border-radius:999px;padding:9px 8px;color:#8f6e7c;font-weight:900}
+    .seg button.active{background:white;color:#c44e79;box-shadow:0 5px 14px rgba(91,42,59,.08)}
+
+    .score-chip{font-size:12px;font-weight:900;background:#fff0f5;color:#c84e79;padding:7px 10px;border-radius:999px}
+    .heart-game .tap-heart.good{background:rgba(255,255,255,.94);color:#ff5f96}
+    .heart-game .tap-heart.bonus{background:#fff8cf;color:#ff9a00;box-shadow:0 10px 30px rgba(255,174,0,.28)}
+    .heart-game .tap-heart.decoy{background:#f3eef0;color:#8f8086;box-shadow:0 10px 24px rgba(80,60,67,.18)}
+    .heart-game .tap-heart.miss{animation:shake .18s linear}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    .combo-note{position:absolute;right:12px;top:12px;z-index:5;background:rgba(255,255,255,.9);border-radius:999px;padding:8px 10px;font-size:11px;font-weight:900;color:#d55b85}
+    .pipe-board{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;aspect-ratio:1/1;background:#fdebf2;border-radius:20px;padding:8px;position:relative}
+    .pipe-cell{position:relative;border:none;border-radius:14px;background:rgba(255,255,255,.88);box-shadow:inset 0 0 0 1px #f5d5e1;overflow:visible}
+    .pipe-cell.path{background:#fff}
+    .pipe-inner{position:absolute;inset:0;transition:.18s transform}
+    .pipe-arm{position:absolute;background:linear-gradient(90deg,#ff83ad,#ffb0c9);border-radius:99px}
+    .pipe-arm.up,.pipe-arm.down{width:12px;height:52%;left:50%;transform:translateX(-50%)}
+    .pipe-arm.up{top:-2%}.pipe-arm.down{bottom:-2%}
+    .pipe-arm.left,.pipe-arm.right{height:12px;width:52%;top:50%;transform:translateY(-50%)}
+    .pipe-arm.left{left:-2%}.pipe-arm.right{right:-2%}
+    .pipe-core{position:absolute;width:22px;height:22px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);background:#ff8eb4;box-shadow:0 0 0 5px #ffe5ee}
+    .pipe-port{position:absolute;z-index:4;top:50%;transform:translateY(-50%);width:22px;height:46px;background:#ff7da9;border-radius:14px;box-shadow:0 8px 18px rgba(255,99,151,.2)}
+    .pipe-port.start{left:-11px}.pipe-port.end{right:-11px}
+    .pipe-done .pipe-cell.path{box-shadow:0 0 0 2px #ff80aa,0 0 20px rgba(255,105,157,.25)}
+    .memory-seq{display:grid;grid-template-columns:1fr 1fr;gap:6px;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:#f8e4ec}
+    .seq-tile{border:none;position:relative;background-repeat:no-repeat;background-size:200% 200%;overflow:hidden}
+    .seq-tile:after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.08);transition:.16s}
+    .seq-tile.flash:after{background:rgba(255,105,157,.48);box-shadow:inset 0 0 0 5px white}
+    .seq-tile.correct:after{background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 4px #ffd1e0}
+    .seq-status{display:flex;gap:7px;margin-top:10px}
+    .seq-dot{height:8px;flex:1;border-radius:99px;background:#f1dce4}
+    .seq-dot.done{background:#ff8fb5}
+    .diff-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .diff-img{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:center/cover no-repeat;box-shadow:inset 0 0 0 1px #f0d9e2}
+    .diff-mark{position:absolute;width:28px;height:28px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-size:13px;color:white;background:rgba(255,105,157,.34);box-shadow:0 5px 14px rgba(95,42,60,.14)}
+    .diff-mark.found{background:#ff73a3;border-color:white;transform:translate(-50%,-50%) scale(1.15)}
+    .diff-label{position:absolute;left:8px;top:8px;background:rgba(255,255,255,.86);backdrop-filter:blur(6px);padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;z-index:3}
+
+
+    /* gameplay refinements */
+    .pipe-cell.powered{box-shadow:0 0 0 2px #ff78a7,0 0 18px rgba(255,105,157,.28);background:#fff6f9}
+    .pipe-cell.powered .pipe-arm{background:linear-gradient(90deg,#ff5d96,#ff9fbd);box-shadow:0 0 10px rgba(255,91,147,.35)}
+    .pipe-entry,.pipe-exit{position:absolute;top:50%;transform:translateY(-50%);z-index:8;width:24px;height:40px;border-radius:13px;background:#ff6f9f;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:1000;box-shadow:0 7px 18px rgba(255,91,147,.28);pointer-events:none}
+    .pipe-entry{left:-16px}.pipe-exit{right:-16px}
+    .pipe-board{overflow:visible}
+    .memory-seq{grid-template-columns:repeat(3,1fr);gap:5px}
+    .seq-tile{background-size:300% 300%}
+    .seq-lives{font-size:12px;font-weight:900;color:#d85b86}
+    .diff-canvas-wrap{position:relative;border-radius:16px;overflow:hidden;background:#f7e6ed;box-shadow:inset 0 0 0 1px #f0d9e2}
+    .diff-canvas-wrap canvas{display:block;width:100%;height:auto;aspect-ratio:3/4;touch-action:manipulation}
+    .diff-label{pointer-events:none}
+    .swap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#f6e2ea;padding:4px}
+    .swap-tile{border:none;border-radius:8px;background-repeat:no-repeat;background-size:300% 300%;position:relative;transition:.14s transform,.14s box-shadow;min-width:0}
+    .swap-tile.selected{transform:scale(.94);box-shadow:0 0 0 4px #ff75a5 inset,0 6px 16px rgba(255,105,157,.22)}
+    .maze-canvas{display:block;width:100%;aspect-ratio:1/1;border-radius:20px;background:#fff1f6;touch-action:none}
+    .dpad{width:196px;margin:14px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+    .dpad button{border:none;border-radius:16px;background:#fff0f5;color:#c84e79;font-size:22px;font-weight:1000;aspect-ratio:1/1;box-shadow:0 7px 18px rgba(118,53,76,.09)}
+    .dpad .empty-pad{visibility:hidden}
+
+
+    /* draggable photo jigsaw */
+    .jig-game{position:relative}
+    .jig-topline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+    .jig-topline .score-chip{white-space:nowrap}
+    .jig-board-wrap{padding:12px;background:linear-gradient(145deg,#fff4f8,#ffeaf2);border-radius:24px;overflow:visible}
+    .jig-board{width:100%;position:relative;margin:0 auto;border-radius:18px;box-shadow:inset 0 0 0 2px rgba(255,132,174,.18);overflow:visible;touch-action:none}
+    .jig-guide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:18px;opacity:.17;filter:saturate(.72);pointer-events:none;transition:.35s opacity}
+    .jig-board.done .jig-guide{opacity:0}
+    .jig-preview{position:absolute;inset:0;z-index:20;border-radius:18px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;transition:.35s opacity}
+    .jig-preview.hide-preview{opacity:0;pointer-events:none}
+    .jig-preview img{width:100%;height:100%;object-fit:cover}
+    .jig-preview span{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.9);padding:7px 11px;border-radius:999px;font-size:11px;font-weight:900;color:#bf557b;white-space:nowrap}
+    .jig-slot-hint{position:absolute;z-index:6;border:2px dashed #ff6f9f;border-radius:12px;background:rgba(255,111,159,.12);pointer-events:none;animation:jigPulse .7s ease-in-out infinite alternate}
+    @keyframes jigPulse{from{opacity:.42;transform:scale(.94)}to{opacity:1;transform:scale(1.02)}}
+    .jig-piece{border:none;background:transparent;padding:0;flex:0 0 auto;width:78px;height:78px;position:relative;touch-action:none;cursor:grab;filter:drop-shadow(0 5px 6px rgba(91,41,59,.16));transition:.16s transform,.16s filter,.16s opacity;z-index:8}
+    .jig-piece canvas{width:100%;height:100%;display:block;pointer-events:none}
+    .jig-piece:active{cursor:grabbing}
+    .jig-piece.hint-piece{animation:jigPieceHint .65s ease-in-out infinite alternate;filter:drop-shadow(0 0 10px rgba(255,90,145,.7))}
+    @keyframes jigPieceHint{from{transform:scale(1)}to{transform:scale(1.12)}}
+    .jig-piece.dragging{position:fixed!important;margin:0!important;z-index:9999!important;pointer-events:none;transform:scale(1.12);filter:drop-shadow(0 13px 14px rgba(77,35,50,.28));transition:none}
+    .jig-piece.drag-source{opacity:.24;transform:scale(.92);filter:none}
+    .jig-drag-ghost{will-change:left,top,transform}
+    .jig-piece.placed{position:absolute!important;margin:0!important;z-index:9;pointer-events:none;filter:none;transition:.18s left,.18s top,.18s width,.18s height}
+    .jig-tray-title{display:flex;align-items:center;justify-content:space-between;margin:13px 2px 7px;font-size:11px;font-weight:900;color:#a16f82}
+    .jig-tray{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:8px 4px 12px;min-height:102px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;background:#fff7fa;border-radius:18px}
+    .jig-tray .jig-piece{scroll-snap-align:center}
+    .jig-tray-empty{width:100%;display:flex;align-items:center;justify-content:center;color:#c6859d;font-weight:900;font-size:12px}
+    .jig-loading{width:100%;min-height:86px;display:flex;align-items:center;justify-content:center;color:#b87991;font-weight:900;font-size:12px}
+    .jig-mobile-error{margin:10px 0 0;padding:11px 12px;border-radius:14px;background:#fff0f3;color:#b84f6f;font-size:12px;line-height:1.55;display:none}
+    .jig-mobile-error.show{display:block}
+    .jig-help{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .jig-help button{width:100%}
+    .jig-difficulty{display:flex;gap:5px;background:#f8e7ee;padding:4px;border-radius:999px}
+    .jig-difficulty button{border:none;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;background:transparent;color:#9a7181}
+    .jig-difficulty button.active{background:white;color:#c74f7a;box-shadow:0 4px 12px rgba(92,43,61,.08)}
+    .jig-pop{animation:jigSnap .28s ease-out}
+    @keyframes jigSnap{0%{transform:scale(.82)}70%{transform:scale(1.08)}100%{transform:scale(1)}}
+
+
+    .cloud-gate{position:fixed;inset:0;z-index:900;background:linear-gradient(180deg,#fff8fb 0%,#ffeef5 100%);display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}
+    .cloud-gate.hide{display:none!important}
+    .cloud-card{width:min(100%,480px);background:rgba(255,255,255,.94);border:1px solid white;border-radius:30px;padding:24px;box-shadow:0 24px 70px rgba(126,61,86,.18)}
+    .cloud-card h2{margin:5px 0 8px;font-size:27px}
+    .cloud-card .cloud-heart{font-size:38px;color:var(--pink);line-height:1}
+    .cloud-panel{margin-top:18px}
+    .cloud-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .cloud-sep{height:1px;background:#f2dce5;margin:20px 0}
+    .cloud-code{font-size:22px;font-weight:1000;letter-spacing:2px;color:#d85b87;background:#fff0f5;padding:12px 14px;border-radius:16px;text-align:center;user-select:all}
+    .cloud-user-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;background:#fff0f5;color:#c44e79;border-radius:999px;font-size:11px;font-weight:900;max-width:155px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .cloud-error{background:#fff0f0;color:#b84646;border-radius:14px;padding:10px 12px;font-size:12px;margin-top:10px;display:none}
+    .cloud-error.show{display:block}
+    .cloud-loading{display:flex;align-items:center;gap:10px;color:#8e7480;font-size:13px}
+    .cloud-spinner{width:18px;height:18px;border:2px solid #f2ccda;border-top-color:#ff6f9f;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    @media (max-width:360px){
+      h1{font-size:30px}
+      .app{padding-left:12px;padding-right:12px}
+      .stage-grid{gap:9px}
+      .flip-grid{gap:6px}
+      .form-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div id="homeView">
+      <div class="topbar">
+        <div class="brand">Pink <span>Memory</span> ♡</div>
+        <div style="display:flex;gap:7px;align-items:center">
+          <button class="mini-btn" onclick="openCloudSettings()">设置</button>
+          <button class="mini-btn" onclick="openCreator()">编辑</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="eyebrow">MINI GAME COLLECTION</div>
+        <h1 id="homeTitle">我们的见面存档</h1>
+        <p class="muted" style="margin:0">玩小游戏，解锁每一次见面的照片。</p>
+        <div class="hero-actions">
+          <button class="primary-btn" onclick="openStages()">开始游戏</button>
+          <button class="soft-btn" onclick="openBook()">照片书</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="homeCount">0</b><small>关卡</small></div>
+          <div class="stat"><b id="homeUnlocked">0</b><small>已解锁</small></div>
+          <div class="stat"><b id="homePercent">0%</b><small>完成度</small></div>
+        </div>
+      </section>
+
+    </div>
+
+    <div id="creatorView" class="hide">
+      <div class="topbar">
+        <button class="mini-btn" onclick="goHome()">← 返回</button>
+        <div class="brand">编辑回忆 ♡</div>
+        <span style="width:58px"></span>
+      </div>
+
+      <section class="panel">
+        <div class="field">
+          <label>纪念册标题</label>
+          <input id="bookTitleInput" maxlength="24" placeholder="例如：我们的见面存档" />
+        </div>
+        <div class="helper">这个标题会显示在首页和照片书。</div>
+      </section>
+
+      <div class="section-title">
+        <div><h2>回忆关卡</h2><p>每次见面可以放 1～4 张照片。</p></div>
+        <button class="soft-btn" onclick="addMemoryEditor()">＋ 添加</button>
+      </div>
+
+      <div id="memoryEditors"></div>
+
+      <div class="creator-actions">
+        <button class="ghost-btn" onclick="saveCreator()">保存</button>
+        <button class="primary-btn" onclick="saveCreator(true)">保存并开始</button>
+      </div>
+    </div>
+
+    <div id="stagesView" class="hide">
+      <div class="topbar">
+        <button class="mini-btn" onclick="goHome()">← 返回</button>
+        <div class="brand">关卡选择 ♡</div>
+        <button class="mini-btn" onclick="openBook()">相册</button>
+      </div>
+
+      <section class="panel" style="padding:16px">
+        <div class="progress-row"><span id="progressText">0 / 0</span><span id="progressPercent">0%</span></div>
+        <div class="progress-bar"><i id="progressFill" style="width:0%"></i></div>
+      </section>
+
+      <div id="completeBanner" class="complete-banner hide">
+        <div class="big">100% ♡</div>
+        <div style="font-weight:900">全部照片已解锁</div>
+        <button class="primary-btn" style="margin-top:12px" onclick="openBook()">查看照片书</button>
+      </div>
+
+      <div id="stageGrid" class="stage-grid"></div>
+      <div id="stageEmpty" class="panel empty hide">还没有关卡。先添加一段回忆吧。</div>
+    </div>
+
+    <div id="bookView" class="hide">
+      <div class="topbar">
+        <button class="mini-btn" onclick="goHome()">← 返回</button>
+        <div class="brand">照片书 ♡</div>
+        <button class="mini-btn" onclick="openStages()">关卡</button>
+      </div>
+      <div class="section-title">
+        <div><h2 id="bookTitleView">我们的见面存档</h2><p>按日期排列 · 只显示已解锁内容</p></div>
+      </div>
+      <div id="bookPages" class="book-shell"></div>
+    </div>
+  </main>
+
+
+  <div id="cloudGate" class="cloud-gate">
+    <section class="cloud-card">
+      <div class="cloud-heart">♡</div>
+      <div class="eyebrow">PINK MEMORY</div>
+      <h2>进入 Pink Memory ♡</h2>
+      <p class="muted" style="margin:0">登录后继续游戏。</p>
+
+      <div id="cloudConfigPanel" class="cloud-panel hide">
+        <div class="panel" style="box-shadow:none;margin:0;background:#fff7fa">
+          <b>暂时无法载入</b>
+          <p class="muted" style="font-size:13px;margin-bottom:0">页面还没有准备好，请稍后再试。</p>
+        </div>
+      </div>
+
+      <div id="cloudAuthPanel" class="cloud-panel hide">
+        <div class="field"><label>邮箱</label><input id="cloudEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+        <div class="field"><label>密码（至少 6 位）</label><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+        <div class="cloud-grid">
+          <button class="ghost-btn" onclick="cloudSignUp()">第一次来 · 注册</button>
+          <button class="primary-btn" onclick="cloudSignIn()">登录</button>
+        </div>
+        <div id="cloudAuthError" class="cloud-error"></div>
+      </div>
+
+      <div id="cloudSpacePanel" class="cloud-panel hide">
+        <div class="cloud-user-pill" id="cloudUserEmail"></div>
+        <div class="cloud-sep"></div>
+        <div class="field"><label>你的名字</label><input id="cloudDisplayName" maxlength="12" placeholder="例如：小兔"></div>
+        <div class="field"><label>新建纪念册</label><input id="cloudNewTitle" maxlength="24" value="我们的见面存档"></div>
+        <button class="primary-btn wide" onclick="cloudCreateGame()">创建纪念册 ♡</button>
+        <div class="cloud-sep"></div>
+        <div class="field"><label>已有邀请码</label><input id="cloudInviteInput" maxlength="12" placeholder="输入邀请码" style="text-transform:uppercase"></div>
+        <button class="soft-btn wide" onclick="cloudJoinGame()">加入</button>
+        <div id="cloudSpaceError" class="cloud-error"></div>
+        <button class="ghost-btn wide" style="margin-top:12px" onclick="cloudSignOut()">退出账号</button>
+      </div>
+
+      <div id="cloudReadyPanel" class="cloud-panel hide">
+        <div class="cloud-user-pill" id="cloudReadyEmail"></div>
+        <div class="field" style="margin-top:14px"><label>邀请码</label><div id="cloudInviteCode" class="cloud-code">----------</div></div>
+        <p class="helper">把邀请码发给 TA，对方登录后输入即可加入。</p>
+        <button class="primary-btn wide" onclick="closeCloudSettings()">回到首页</button>
+        <button class="ghost-btn wide" style="margin-top:9px" onclick="cloudSignOut()">退出账号</button>
+      </div>
+
+      <div id="cloudLoadingPanel" class="cloud-panel hide"><div class="cloud-loading"><i class="cloud-spinner"></i><span id="cloudLoadingText">正在加载…</span></div></div>
+    </section>
+  </div>
+
+  <div id="gameModal" class="modal hide">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div>
+          <div class="eyebrow" id="gameStageLabel">STAGE 01</div>
+          <h3 id="gameTitle">小游戏</h3>
+        </div>
+        <button class="close" onclick="closeGame()">×</button>
+      </div>
+      <div id="gameContent"></div>
+    </div>
+  </div>
+
+  <div id="revealModal" class="modal hide">
+    <div class="sheet">
+      <div id="revealContent" class="reveal-card"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>
+const KEY = "pinkMemoryGame_cloud_v5";
+let data = {
+  title:"我们的见面存档",
+  memories:[]
+};
+let progress = {};
+let sb = null;
+let currentUser = null;
+let currentGame = null;
+let cloudBooted = false;
+let editorDraft = [];
+let currentMemory = null;
+let timers = [];
+let jigSessionCleanup = null;
+
+function cleanupJigsawArtifacts(){
+  if(typeof jigSessionCleanup==="function"){
+    try{ jigSessionCleanup(); }catch(e){}
+  }
+  jigSessionCleanup=null;
+  document.querySelectorAll("body > .jig-drag-ghost, body > .jig-piece.dragging").forEach(el=>el.remove());
+  document.querySelectorAll(".jig-piece.drag-source").forEach(el=>el.classList.remove("drag-source"));
+}
+
+function uid(){ return "m_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,7); }
+function q(id){ return document.getElementById(id); }
+function esc(str=""){
+  return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[s]));
+}
+function saveAll(){
+  // Data persistence is handled remotely.
+  return true;
+}
+function loadAll(){
+  updateHome();
+}
+function cloudConfigured(){
+  const c=window.PINK_MEMORY_CLOUD||{};
+  return !!(c.url && c.publishableKey && !String(c.url).includes("YOUR_") && !String(c.publishableKey).includes("YOUR_"));
+}
+function setCloudPanel(name){
+  ["cloudConfigPanel","cloudAuthPanel","cloudSpacePanel","cloudReadyPanel","cloudLoadingPanel"].forEach(id=>q(id)?.classList.add("hide"));
+  if(name) q(name)?.classList.remove("hide");
+}
+function setCloudError(id,msg=""){
+  const el=q(id); if(!el) return;
+  el.textContent=msg; el.classList.toggle("show",!!msg);
+}
+function cloudLoading(text="正在加载…"){
+  setCloudPanel("cloudLoadingPanel");
+  if(q("cloudLoadingText")) q("cloudLoadingText").textContent=text;
+}
+function openCloudSettings(){
+  q("cloudGate").classList.remove("hide");
+  if(!cloudConfigured()) return setCloudPanel("cloudConfigPanel");
+  if(!currentUser) return setCloudPanel("cloudAuthPanel");
+  if(!currentGame){
+    q("cloudUserEmail").textContent=currentUser.email||"已登录";
+    return setCloudPanel("cloudSpacePanel");
+  }
+  q("cloudReadyEmail").textContent=currentUser.email||"已登录";
+  q("cloudInviteCode").textContent=currentGame.invite_code||"";
+  setCloudPanel("cloudReadyPanel");
+}
+function closeCloudSettings(){
+  if(currentGame) q("cloudGate").classList.add("hide");
+}
+async function initCloud(){
+  if(!cloudConfigured()){
+    setCloudPanel("cloudConfigPanel");
+    return;
+  }
+  const c=window.PINK_MEMORY_CLOUD;
+  sb=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  cloudLoading();
+  const {data:{session}}=await sb.auth.getSession();
+  if(session?.user) await afterCloudAuth(session.user);
+  else setCloudPanel("cloudAuthPanel");
+  sb.auth.onAuthStateChange(async(event,session)=>{
+    if(event==="SIGNED_OUT"){
+      currentUser=null; currentGame=null; data={title:"我们的见面存档",memories:[]}; progress={}; updateHome();
+      q("cloudGate").classList.remove("hide"); setCloudPanel("cloudAuthPanel");
+    }
+  });
+  cloudBooted=true;
+}
+async function cloudSignUp(){
+  if(!sb) return;
+  const email=q("cloudEmail").value.trim(), password=q("cloudPassword").value;
+  setCloudError("cloudAuthError");
+  if(!email||password.length<6) return setCloudError("cloudAuthError","请输入邮箱，并使用至少 6 位密码。");
+  cloudLoading("正在注册…");
+  const redirect=location.origin && location.origin!=="null" ? location.origin+location.pathname : undefined;
+  const {data:res,error}=await sb.auth.signUp({email,password,options: redirect?{emailRedirectTo:redirect}:{}});
+  if(error){ setCloudPanel("cloudAuthPanel"); return setCloudError("cloudAuthError",error.message); }
+  if(res.session && res.user) await afterCloudAuth(res.user);
+  else{
+    setCloudPanel("cloudAuthPanel");
+    setCloudError("cloudAuthError","注册成功。请到邮箱点击确认链接，然后回来登录。");
+  }
+}
+async function cloudSignIn(){
+  if(!sb) return;
+  const email=q("cloudEmail").value.trim(), password=q("cloudPassword").value;
+  setCloudError("cloudAuthError"); cloudLoading("正在登录…");
+  const {data:res,error}=await sb.auth.signInWithPassword({email,password});
+  if(error){ setCloudPanel("cloudAuthPanel"); return setCloudError("cloudAuthError",error.message); }
+  await afterCloudAuth(res.user);
+}
+async function cloudSignOut(){
+  if(sb) await sb.auth.signOut();
+}
+async function afterCloudAuth(user){
+  currentUser=user; cloudLoading("正在加载…");
+  const {data:members,error}=await sb.from("game_members").select("game_id,display_name").eq("user_id",user.id).limit(1);
+  if(error){ setCloudPanel("cloudSpacePanel"); setCloudError("cloudSpaceError",error.message); return; }
+  if(!members?.length){
+    currentGame=null; q("cloudUserEmail").textContent=user.email||"已登录"; setCloudPanel("cloudSpacePanel"); return;
+  }
+  const {data:g,error:ge}=await sb.from("games").select("id,title,invite_code").eq("id",members[0].game_id).single();
+  if(ge){ setCloudPanel("cloudSpacePanel"); setCloudError("cloudSpaceError",ge.message); return; }
+  currentGame=g;
+  await loadCloudData();
+  q("cloudGate").classList.add("hide");
+}
+async function cloudCreateGame(){
+  const name=(q("cloudDisplayName").value||"我").trim();
+  const title=(q("cloudNewTitle").value||"我们的见面存档").trim();
+  setCloudError("cloudSpaceError"); cloudLoading("正在创建…");
+  const {data:rows,error}=await sb.rpc("create_game",{p_title:title,p_display_name:name});
+  if(error){ setCloudPanel("cloudSpacePanel"); return setCloudError("cloudSpaceError",error.message); }
+  const row=Array.isArray(rows)?rows[0]:rows;
+  currentGame={id:row.game_id,title:row.title,invite_code:row.invite_code};
+  await loadCloudData();
+  q("cloudReadyEmail").textContent=currentUser.email||"已登录";
+  q("cloudInviteCode").textContent=currentGame.invite_code;
+  setCloudPanel("cloudReadyPanel");
+}
+async function cloudJoinGame(){
+  const name=(q("cloudDisplayName").value||"TA").trim();
+  const code=(q("cloudInviteInput").value||"").trim().toUpperCase();
+  if(!code) return setCloudError("cloudSpaceError","请输入邀请码。");
+  setCloudError("cloudSpaceError"); cloudLoading("正在加入…");
+  const {data:rows,error}=await sb.rpc("join_game",{p_invite_code:code,p_display_name:name});
+  if(error){ setCloudPanel("cloudSpacePanel"); return setCloudError("cloudSpaceError",error.message); }
+  const row=Array.isArray(rows)?rows[0]:rows;
+  currentGame={id:row.game_id,title:row.title,invite_code:row.invite_code};
+  await loadCloudData();
+  q("cloudGate").classList.add("hide");
+}
+async function signedPhoto(path){
+  const {data:s,error}=await sb.storage.from("memory-photos").createSignedUrl(path,86400);
+  if(error) throw error;
+  return s.signedUrl;
+}
+async function loadCloudData(){
+  if(!sb||!currentGame||!currentUser) return;
+  cloudLoading("正在加载回忆…");
+  const [gm,mm,pp,pr]=await Promise.all([
+    sb.from("games").select("id,title,invite_code").eq("id",currentGame.id).single(),
+    sb.from("memories").select("id,title,memory_date,place,note,game_type,sort_order").eq("game_id",currentGame.id).order("sort_order"),
+    sb.from("memory_photos").select("id,memory_id,storage_path,sort_order").eq("game_id",currentGame.id).order("sort_order"),
+    sb.from("progress").select("memory_id,completed").eq("game_id",currentGame.id).eq("user_id",currentUser.id)
+  ]);
+  const firstErr=[gm,mm,pp,pr].find(x=>x.error)?.error;
+  if(firstErr){ console.error(firstErr); alert("加载失败，请稍后重试。"); return; }
+  currentGame=gm.data;
+  const photosBy={};
+  for(const p of pp.data||[]){ (photosBy[p.memory_id]??=[]).push(p); }
+  const memories=[];
+  for(const m of mm.data||[]){
+    const list=photosBy[m.id]||[];
+    const urls=[];
+    for(const p of list){
+      try{ urls.push(await signedPhoto(p.storage_path)); }
+      catch(e){
+        console.warn("Photo signed URL failed", p.storage_path, e);
+        urls.push("");
+      }
+    }
+    memories.push({id:m.id,title:m.title||"",date:m.memory_date||"",place:m.place||"",note:m.note||"",game:m.game_type||"puzzle",images:urls,photoPaths:list.map(x=>x.storage_path)});
+  }
+  data={title:currentGame.title||"我们的见面存档",memories};
+  progress={}; (pr.data||[]).forEach(x=>{if(x.completed) progress[x.memory_id]=true;});
+  updateHome();
+  if(!q("stagesView").classList.contains("hide")) renderStages();
+  if(!q("bookView").classList.contains("hide")) renderBook();
+}
+async function dataUrlToBlob(dataUrl){
+  const r=await fetch(dataUrl); return await r.blob();
+}
+async function uploadMemoryPhotos(memory){
+  const paths=[];
+  for(let i=0;i<(memory.images||[]).length;i++){
+    const src=memory.images[i];
+    if(!String(src).startsWith("data:")) continue;
+    const blob=await dataUrlToBlob(src);
+    const path=`${currentGame.id}/${memory.id}/${crypto.randomUUID()}.jpg`;
+    const {error}=await sb.storage.from("memory-photos").upload(path,blob,{contentType:"image/jpeg",upsert:false});
+    if(error) throw error;
+    paths.push(path);
+  }
+  if(paths.length){
+    const rows=paths.map((p,i)=>({game_id:currentGame.id,memory_id:memory.id,storage_path:p,sort_order:i}));
+    const {error}=await sb.from("memory_photos").insert(rows);
+    if(error) throw error;
+  }
+  return paths;
+}
+async function removePhotoPaths(paths=[]){
+  if(!paths.length) return;
+  await sb.storage.from("memory-photos").remove(paths);
+}
+function clearTimers(){
+  timers.forEach(t=>{ clearInterval(t); clearTimeout(t); });
+  timers = [];
+}
+function showToast(text){
+  const el=q("toast"); el.textContent=text; el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),1600);
+}
+function hideAllViews(){
+  ["homeView","creatorView","stagesView","bookView"].forEach(id=>q(id).classList.add("hide"));
+}
+function goHome(){
+  closeGame();
+  q("revealModal").classList.add("hide");
+  hideAllViews(); q("homeView").classList.remove("hide"); updateHome();
+}
+function openCreator(){
+  hideAllViews(); q("creatorView").classList.remove("hide");
+  editorDraft = JSON.parse(JSON.stringify(data.memories || []));
+  if(!editorDraft.length) editorDraft.push(blankMemory());
+  q("bookTitleInput").value=data.title||"";
+  renderEditors();
+}
+function openStages(){
+  hideAllViews(); q("stagesView").classList.remove("hide"); renderStages();
+}
+function openBook(){
+  hideAllViews(); q("bookView").classList.remove("hide"); renderBook();
+}
+function blankMemory(){
+  return {id:uid(),title:"",date:"",place:"",note:"",game:"puzzle",images:[],photoPaths:[],_newPhotos:false};
+}
+function updateHome(){
+  q("homeTitle").textContent=data.title||"我们的见面存档";
+  const total=data.memories.length;
+  const done=data.memories.filter(m=>progress[m.id]).length;
+  q("homeCount").textContent=total;
+  q("homeUnlocked").textContent=done;
+  q("homePercent").textContent= total?Math.round(done/total*100)+"%":"0%";
+}
+
+function addMemoryEditor(){
+  editorDraft.push(blankMemory());
+  renderEditors();
+  setTimeout(()=>window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"}),50);
+}
+function removeEditor(i){
+  if(editorDraft.length===1){
+    editorDraft[0]=blankMemory();
+  }else editorDraft.splice(i,1);
+  renderEditors();
+}
+function renderEditors(){
+  const wrap=q("memoryEditors");
+  wrap.innerHTML=editorDraft.map((m,i)=>`
+    <section class="panel memory-editor">
+      <div class="editor-head">
+        <div><span class="badge">MEMORY ${String(i+1).padStart(2,"0")}</span></div>
+        <button class="danger-btn" onclick="removeEditor(${i})">删除</button>
+      </div>
+
+      <div class="field">
+        <label>照片（1～4 张，第一张作为小游戏代表图）</label>
+        <div class="photo-upload">
+          <input type="file" accept="image/*" multiple onchange="handlePhotos(event,${i})" />
+          <div>点击选择照片<br><span style="font-size:11px">手机可以直接从相册选择</span></div>
+        </div>
+        <div class="preview-grid">${(m.images||[]).map(src=>`<img src="${src}" alt="">`).join("")}</div>
+      </div>
+
+      <div class="field">
+        <label>这次见面的名字</label>
+        <input value="${esc(m.title)}" maxlength="18" placeholder="例如：厦门 / 第一次旅行 / 周末见面" oninput="updateDraft(${i},'title',this.value)">
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>日期</label>
+          <input type="date" value="${esc(m.date)}" oninput="updateDraft(${i},'date',this.value)">
+        </div>
+        <div class="field">
+          <label>地点</label>
+          <input value="${esc(m.place)}" maxlength="16" placeholder="例如：杭州" oninput="updateDraft(${i},'place',this.value)">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>小游戏</label>
+          <select onchange="updateDraft(${i},'game',this.value)">
+            <option value="puzzle" ${m.game==="puzzle"?"selected":""}>照片碎片拼图</option>
+            <option value="hearts" ${m.game==="hearts"?"selected":""}>追爱心</option>
+            <option value="flip" ${m.game==="flip"?"selected":""}>照片翻牌</option>
+            <option value="pipes" ${m.game==="pipes"?"selected":""}>管道连通</option>
+            <option value="sequence" ${m.game==="sequence"?"selected":""}>快速记忆</option>
+            <option value="difference" ${m.game==="difference"?"selected":""}>照片找不同</option>
+            <option value="swap" ${m.game==="swap"?"selected":""}>照片换位</option>
+            <option value="maze" ${m.game==="maze"?"selected":""}>照片迷宫</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>一句小备注（可空）</label>
+          <input value="${esc(m.note)}" maxlength="24" placeholder="例如：走了两万步" oninput="updateDraft(${i},'note',this.value)">
+        </div>
+      </div>
+    </section>`).join("");
+}
+function updateDraft(i,key,val){ editorDraft[i][key]=val; }
+
+async function handlePhotos(ev,i){
+  const files=[...ev.target.files].slice(0,4);
+  if(!files.length) return;
+  showToast("正在压缩照片…");
+  const imgs=[];
+  for(const file of files){
+    try{ imgs.push(await compressImage(file,1000,.78)); }catch(e){}
+  }
+  editorDraft[i].images=imgs;
+  editorDraft[i]._newPhotos=true;
+  renderEditors();
+  showToast(`已加入 ${imgs.length} 张照片`);
+}
+function compressImage(file,maxSide=1000,quality=.78){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=reject;
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=reject;
+      img.onload=()=>{
+        let {width,height}=img;
+        const scale=Math.min(1,maxSide/Math.max(width,height));
+        width=Math.round(width*scale); height=Math.round(height*scale);
+        const c=document.createElement("canvas"); c.width=width; c.height=height;
+        c.getContext("2d").drawImage(img,0,0,width,height);
+        resolve(c.toDataURL("image/jpeg",quality));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function saveCreator(goPlay=false){
+  if(!sb||!currentGame||!currentUser){ openCloudSettings(); return; }
+  const title=(q("bookTitleInput").value||"我们的见面存档").trim();
+  const valid=editorDraft.filter(m=>m.title||m.date||m.place||(m.images&&m.images.length));
+  if(!valid.length){ alert("至少添加一次见面。"); return; }
+  const missing=valid.findIndex(m=>!m.images?.length);
+  if(missing>=0){ alert(`MEMORY ${missing+1} 还没有照片。`); return; }
+
+  const btns=[...document.querySelectorAll(".creator-actions button")]; btns.forEach(b=>b.disabled=true);
+  showToast("正在保存…");
+  try{
+    const {error:gameErr}=await sb.from("games").update({title}).eq("id",currentGame.id);
+    if(gameErr) throw gameErr;
+
+    const oldById=new Map(data.memories.map(m=>[m.id,m]));
+    const keepIds=new Set();
+
+    for(let i=0;i<valid.length;i++){
+      const m=valid[i];
+      if(!String(m.id).match(/^[0-9a-f]{8}-[0-9a-f-]{27}$/i)) m.id=crypto.randomUUID();
+      keepIds.add(m.id);
+      const row={id:m.id,game_id:currentGame.id,title:m.title||"",memory_date:m.date||null,place:m.place||"",note:m.note||"",game_type:m.game||"puzzle",sort_order:i};
+      const {error}=await sb.from("memories").upsert(row,{onConflict:"id"});
+      if(error) throw error;
+
+      const old=oldById.get(m.id);
+      const needsPhotos=m._newPhotos || !old || !(m.photoPaths?.length);
+      if(needsPhotos){
+        const oldPaths=(old?.photoPaths||m.photoPaths||[]).filter(Boolean);
+        if(oldPaths.length) await removePhotoPaths(oldPaths);
+        const {error:delMeta}=await sb.from("memory_photos").delete().eq("memory_id",m.id);
+        if(delMeta) throw delMeta;
+        await uploadMemoryPhotos(m);
+      }
+    }
+
+    for(const old of data.memories){
+      if(!keepIds.has(old.id)){
+        await removePhotoPaths(old.photoPaths||[]);
+        const {error}=await sb.from("memories").delete().eq("id",old.id);
+        if(error) throw error;
+      }
+    }
+
+    currentGame.title=title;
+    await loadCloudData();
+    showToast("已保存 ✓");
+    if(goPlay) openStages(); else openCreator();
+  }catch(e){
+    console.error(e); alert("保存失败："+(e.message||e));
+  }finally{ btns.forEach(b=>b.disabled=false); }
+}
+
+function renderStages(){
+  const total=data.memories.length;
+  const done=data.memories.filter(m=>progress[m.id]).length;
+  const percent=total?Math.round(done/total*100):0;
+  q("progressText").textContent=`${done} / ${total} 已解锁`;
+  q("progressPercent").textContent=percent+"%";
+  q("progressFill").style.width=percent+"%";
+  q("completeBanner").classList.toggle("hide",!(total&&done===total));
+  q("stageEmpty").classList.toggle("hide",!!total);
+  q("stageGrid").innerHTML=data.memories.map((m,i)=>{
+    const unlocked=!!progress[m.id];
+    return `<button class="stage-card" onclick="enterStage('${m.id}')">
+      <div class="stage-cover">
+        <span class="stage-num">STAGE ${String(i+1).padStart(2,"0")}</span>
+        <span class="stage-status">${unlocked?"已收集":"未解锁"}</span>
+        ${unlocked?`<img src="${m.images[0]}" alt="">`:`<div class="locked-heart">♡</div>`}
+      </div>
+      <div class="stage-info">
+        <h3>${unlocked?esc(m.title):"??? · "+gameName(m.game)}</h3>
+        <small>${unlocked?[m.date,m.place].filter(Boolean).join(" · "):"完成小游戏后显示照片"}</small>
+      </div>
+    </button>`;
+  }).join("");
+}
+function gameName(g){
+  return ({puzzle:"照片碎片拼图",hearts:"追爱心",flip:"照片翻牌",pipes:"管道连通",sequence:"快速记忆",difference:"照片找不同",swap:"照片换位",maze:"照片迷宫"})[g]||"小游戏";
+}
+function enterStage(id){
+  currentMemory=data.memories.find(m=>m.id===id);
+  if(!currentMemory) return;
+  if(progress[id]){
+    showReveal(currentMemory,false);
+    return;
+  }
+  openGame(currentMemory);
+}
+function openGame(m){
+  cleanupJigsawArtifacts();
+  clearTimers();
+  const idx=data.memories.findIndex(x=>x.id===m.id)+1;
+  q("gameStageLabel").textContent="STAGE "+String(idx).padStart(2,"0");
+  q("gameTitle").textContent=gameName(m.game);
+  q("gameModal").classList.remove("hide");
+  if(m.game==="puzzle") startPuzzle(m);
+  if(m.game==="hearts") startHearts(m);
+  if(m.game==="flip") startFlip(m);
+  if(m.game==="pipes") startPipes(m);
+  if(m.game==="sequence") startSequence(m);
+  if(m.game==="difference") startDifference(m);
+  if(m.game==="swap") startSwap(m);
+  if(m.game==="maze") startMaze(m);
+}
+function closeGame(){
+  cleanupJigsawArtifacts();
+  clearTimers();
+  q("gameModal").classList.add("hide");
+  q("gameContent").innerHTML="";
+}
+async function success(m){
+  cleanupJigsawArtifacts();
+  clearTimers();
+  progress[m.id]=true;
+  if(sb&&currentGame&&currentUser){
+    const {error}=await sb.from("progress").upsert({game_id:currentGame.id,user_id:currentUser.id,memory_id:m.id,completed:true,updated_at:new Date().toISOString()},{onConflict:"user_id,memory_id"});
+    if(error) console.error("progress save failed",error);
+  }
+  heartConfetti();
+  setTimeout(()=>{
+    q("gameModal").classList.add("hide");
+    showReveal(m,true);
+  },350);
+}
+function heartConfetti(){
+  for(let i=0;i<18;i++){
+    const h=document.createElement("div");
+    h.className="confetti-heart";
+    h.textContent=i%3===0?"♥":"♡";
+    h.style.left=(10+Math.random()*80)+"vw";
+    h.style.bottom=(20+Math.random()*18)+"px";
+    h.style.color=["#ff6f9f","#ff9fbd","#f4a7c3"][i%3];
+    h.style.animationDelay=(Math.random()*.25)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1800);
+  }
+}
+
+async function startPuzzle(m,pieceCount=20){
+  cleanupJigsawArtifacts();
+  clearTimers();
+  q("gameContent").innerHTML=`
+    <div class="game-frame jig-game">
+      <div class="jig-topline">
+        <div>
+          <b>把照片拼回来</b>
+          <div class="helper" style="margin-top:3px">拖动碎片到正确位置，靠近时会自动吸附</div>
+        </div>
+        <span class="score-chip" id="jigProgress">0 / ${pieceCount}</span>
+      </div>
+      <div class="jig-board-wrap">
+        <div id="jigBoard" class="jig-board">
+          <img id="jigGuide" class="jig-guide" alt="">
+          <div id="jigPreview" class="jig-preview"><img id="jigPreviewImg" alt=""><span>先看 1.5 秒 ♡</span></div>
+        </div>
+      </div>
+      <div class="jig-tray-title"><span>碎片托盘 · 左右滑动</span><span id="jigPlacedText">还剩 ${pieceCount} 片</span></div>
+      <div id="jigTray" class="jig-tray"><div class="jig-loading">正在准备照片碎片…</div></div>
+      <div id="jigMobileError" class="jig-mobile-error"></div>
+      <div class="jig-help">
+        <button class="soft-btn" id="jigHintBtn" disabled>💡 提示</button>
+        <button class="soft-btn" onclick="startPuzzle(currentMemory,${pieceCount})">重新打乱</button>
+      </div>
+      <div class="jig-difficulty" style="margin-top:10px">
+        <button class="${pieceCount===20?'active':''}" onclick="startPuzzle(currentMemory,20)">普通 · 20片</button>
+        <button class="${pieceCount===30?'active':''}" onclick="startPuzzle(currentMemory,30)">挑战 · 30片</button>
+      </div>
+    </div>`;
+
+  const board=q("jigBoard"), tray=q("jigTray"), preview=q("jigPreview"), guide=q("jigGuide");
+  const previewImg=q("jigPreviewImg"), errorBox=q("jigMobileError"), hintBtn=q("jigHintBtn");
+  const portraitCols = pieceCount===30?5:4;
+  const portraitRows = pieceCount===30?6:5;
+  let localBlobUrl=null;
+  let cancelled=false;
+  let activeDragCleanup=null;
+  let onJigResize=null;
+  let pieces=[];
+
+  function revokeLocal(){
+    if(localBlobUrl){
+      try{URL.revokeObjectURL(localBlobUrl);}catch(e){}
+      localBlobUrl=null;
+    }
+  }
+  function baseCleanup(){
+    cancelled=true;
+    if(activeDragCleanup) activeDragCleanup();
+    if(onJigResize) window.removeEventListener("resize",onJigResize);
+    document.querySelectorAll("body > .jig-drag-ghost, body > .jig-piece.dragging").forEach(el=>el.remove());
+    pieces.forEach(p=>p.el?.classList.remove("drag-source"));
+    revokeLocal();
+  }
+  jigSessionCleanup=baseCleanup;
+
+  try{
+    const prepared=await preparePuzzlePhoto(m);
+    if(cancelled) return;
+    localBlobUrl=prepared.local ? prepared.src : null;
+    guide.src=prepared.src;
+    previewImg.src=prepared.src;
+    const img=await loadPuzzleImage(prepared.src);
+    if(cancelled) return;
+    build(img);
+  }catch(err){
+    console.error("Puzzle photo preparation failed",err);
+    if(cancelled) return;
+    tray.innerHTML='<div class="jig-tray-empty">照片没有成功加载</div>';
+    preview.classList.add("hide-preview");
+    errorBox.textContent="照片暂时没有加载出来。请点“重新打乱”重试；如果仍然为空，关闭关卡后重新进入一次。";
+    errorBox.classList.add("show");
+  }
+
+  async function preparePuzzlePhoto(memory){
+    let src=memory?.images?.[0]||"";
+    if(!src && memory?.photoPaths?.[0]){
+      src=await signedPhoto(memory.photoPaths[0]);
+      memory.images[0]=src;
+    }
+    if(!src) throw new Error("No photo URL");
+
+    // iOS/WKWebView 对跨域临时图片绘制到 canvas 偶尔不稳定。
+    // 先 fetch 成本地 Blob URL，之后所有拼图 canvas 都只读取本地对象 URL。
+    try{
+      const res=await fetch(src,{cache:"no-store"});
+      if(!res.ok) throw new Error("Photo HTTP "+res.status);
+      const blob=await res.blob();
+      if(!blob.size) throw new Error("Empty photo blob");
+      return {src:URL.createObjectURL(blob),local:true};
+    }catch(fetchErr){
+      console.warn("Puzzle blob fallback to signed URL",fetchErr);
+      return {src,local:false};
+    }
+  }
+
+  function loadPuzzleImage(src){
+    return new Promise((resolve,reject)=>{
+      const img=new Image();
+      img.decoding="async";
+      img.onload=()=>resolve(img);
+      img.onerror=()=>reject(new Error("Image element failed to load"));
+      img.src=src;
+      if(img.complete && img.naturalWidth>0) resolve(img);
+    });
+  }
+
+  function build(img){
+    const landscape=img.naturalWidth>img.naturalHeight*1.08;
+    const cols=landscape?portraitRows:portraitCols;
+    const rows=landscape?portraitCols:portraitRows;
+    const total=cols*rows;
+    const CELL=100, TAB=18, BOX=CELL+TAB*2;
+    const tabRatio=TAB/CELL;
+    board.style.aspectRatio=`${cols} / ${rows}`;
+    guide.style.objectFit="cover";
+    tray.innerHTML="";
+    hintBtn.disabled=false;
+
+    const edges=[];
+    for(let r=0;r<rows;r++){
+      edges[r]=[];
+      for(let c=0;c<cols;c++){
+        const top=r===0?0:-edges[r-1][c].bottom;
+        const left=c===0?0:-edges[r][c-1].right;
+        const right=c===cols-1?0:(Math.random()<.5?1:-1);
+        const bottom=r===rows-1?0:(Math.random()<.5?1:-1);
+        edges[r][c]={top,right,bottom,left};
+      }
+    }
+
+    pieces=[];
+    let placed=0;
+    const shuffled=Array.from({length:total},(_,i)=>i).sort(()=>Math.random()-.5);
+    try{
+      shuffled.forEach(index=>{
+        const r=Math.floor(index/cols),c=index%cols;
+        const el=document.createElement("button");
+        el.className="jig-piece";
+        el.dataset.index=index; el.dataset.row=r; el.dataset.col=c;
+        const canvas=document.createElement("canvas");
+        const DPR=Math.min(2,window.devicePixelRatio||1);
+        canvas.width=BOX*DPR; canvas.height=BOX*DPR;
+        const ctx=canvas.getContext("2d");
+        if(!ctx) throw new Error("Canvas 2D unavailable");
+        ctx.scale(DPR,DPR);
+        const path=makePiecePath(edges[r][c],CELL,TAB);
+
+        ctx.save();
+        ctx.clip(path);
+        // 直接从原图绘制，避免 iOS WebView 的 canvas -> canvas 二次绘制兼容问题。
+        ctx.translate(TAB-c*CELL,TAB-r*CELL);
+        drawCover(ctx,img,cols*CELL,rows*CELL);
+        ctx.restore();
+        ctx.strokeStyle="rgba(255,255,255,.94)"; ctx.lineWidth=2.2; ctx.stroke(path);
+        ctx.strokeStyle="rgba(212,96,137,.16)"; ctx.lineWidth=.8; ctx.stroke(path);
+        el.appendChild(canvas);
+        pieces.push({index,r,c,el,placed:false});
+        tray.appendChild(el);
+        enableDrag(el,pieces[pieces.length-1]);
+      });
+    }catch(drawErr){
+      console.error("Puzzle canvas build failed",drawErr);
+      tray.innerHTML='<div class="jig-tray-empty">当前手机浏览器无法绘制拼图碎片</div>';
+      errorBox.textContent="当前浏览器暂时无法显示拼图。请用 Safari 打开后再试。";
+      errorBox.classList.add("show");
+      return;
+    }
+
+    const hidePreview=setTimeout(()=>preview.classList.add("hide-preview"),1500);
+    timers.push(hidePreview);
+
+    hintBtn.onclick=()=>{
+      const remain=pieces.filter(p=>!p.placed);
+      if(!remain.length) return;
+      pieces.forEach(p=>p.el.classList.remove("hint-piece"));
+      board.querySelectorAll(".jig-slot-hint").forEach(x=>x.remove());
+      const p=remain[Math.floor(Math.random()*remain.length)];
+      p.el.classList.add("hint-piece");
+      try{p.el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}catch(e){}
+      const hint=document.createElement("div"); hint.className="jig-slot-hint";
+      const cellW=board.clientWidth/cols,cellH=board.clientHeight/rows;
+      hint.style.left=(p.c*cellW+cellW*.09)+"px";
+      hint.style.top=(p.r*cellH+cellH*.09)+"px";
+      hint.style.width=(cellW*.82)+"px"; hint.style.height=(cellH*.82)+"px";
+      board.appendChild(hint);
+      const t=setTimeout(()=>{p.el.classList.remove("hint-piece");hint.remove();},1800); timers.push(t);
+    };
+
+    function enableDrag(el,piece){
+      const beginDrag=(clientX,clientY,sourceEvent)=>{
+        if(piece.placed || cancelled) return;
+        if(sourceEvent?.cancelable) sourceEvent.preventDefault();
+        if(activeDragCleanup) activeDragCleanup();
+
+        const rect=el.getBoundingClientRect();
+        let lastX=clientX,lastY=clientY;
+        const ghost=el.cloneNode(true);
+        ghost.className="jig-piece dragging jig-drag-ghost";
+        ghost.style.width=rect.width+"px";
+        ghost.style.height=rect.height+"px";
+        ghost.style.left=(lastX-rect.width/2)+"px";
+        ghost.style.top=(lastY-rect.height/2)+"px";
+        document.body.appendChild(ghost);
+        el.classList.add("drag-source");
+
+        function moveGhost(x,y){
+          lastX=x; lastY=y;
+          ghost.style.left=(x-rect.width/2)+"px";
+          ghost.style.top=(y-rect.height/2)+"px";
+        }
+        function finish(x,y,cancelledDrag=false){
+          cleanupOnly();
+          if(cancelledDrag || cancelled || piece.placed) return;
+          const br=board.getBoundingClientRect();
+          const cellW=br.width/cols,cellH=br.height/rows;
+          const targetX=br.left+(piece.c+.5)*cellW;
+          const targetY=br.top+(piece.r+.5)*cellH;
+          const dist=Math.hypot((x-targetX)/cellW,(y-targetY)/cellH);
+          const inside=x>=br.left-cellW*.18&&x<=br.right+cellW*.18&&y>=br.top-cellH*.18&&y<=br.bottom+cellH*.18;
+          if(inside && dist<.86) snapPiece(piece,cellW,cellH);
+          else if(inside) showToast("位置还不对");
+        }
+
+        function onPointerMove(e){if(e.cancelable)e.preventDefault();moveGhost(e.clientX,e.clientY);}
+        function onPointerUp(e){finish(e.clientX,e.clientY,false);}
+        function onPointerCancel(){finish(lastX,lastY,true);}
+        function onTouchMove(e){const t=e.touches[0];if(!t)return;if(e.cancelable)e.preventDefault();moveGhost(t.clientX,t.clientY);}
+        function onTouchEnd(e){const t=e.changedTouches[0];finish(t?t.clientX:lastX,t?t.clientY:lastY,false);}
+        function onTouchCancel(){finish(lastX,lastY,true);}
+
+        function cleanupOnly(){
+          window.removeEventListener("pointermove",onPointerMove);
+          window.removeEventListener("pointerup",onPointerUp);
+          window.removeEventListener("pointercancel",onPointerCancel);
+          window.removeEventListener("touchmove",onTouchMove);
+          window.removeEventListener("touchend",onTouchEnd);
+          window.removeEventListener("touchcancel",onTouchCancel);
+          ghost.remove();
+          el.classList.remove("drag-source");
+          if(activeDragCleanup===cleanupOnly) activeDragCleanup=null;
+        }
+
+        activeDragCleanup=cleanupOnly;
+        if(window.PointerEvent){
+          window.addEventListener("pointermove",onPointerMove,{passive:false});
+          window.addEventListener("pointerup",onPointerUp);
+          window.addEventListener("pointercancel",onPointerCancel);
+        }else{
+          window.addEventListener("touchmove",onTouchMove,{passive:false});
+          window.addEventListener("touchend",onTouchEnd);
+          window.addEventListener("touchcancel",onTouchCancel);
+        }
+      };
+
+      if(window.PointerEvent){
+        el.addEventListener("pointerdown",ev=>beginDrag(ev.clientX,ev.clientY,ev));
+      }else{
+        el.addEventListener("touchstart",ev=>{
+          const t=ev.touches[0]; if(t) beginDrag(t.clientX,t.clientY,ev);
+        },{passive:false});
+      }
+    }
+
+    function snapPiece(piece,cellW,cellH){
+      piece.placed=true; placed++;
+      const el=piece.el;
+      board.appendChild(el); el.className="jig-piece placed jig-pop";
+      const w=cellW*(1+2*tabRatio), h=cellH*(1+2*tabRatio);
+      el.style.width=w+"px"; el.style.height=h+"px";
+      el.style.left=(piece.c*cellW-tabRatio*cellW)+"px";
+      el.style.top=(piece.r*cellH-tabRatio*cellH)+"px";
+      q("jigProgress").textContent=`${placed} / ${total}`;
+      q("jigPlacedText").textContent=placed===total?"完成 ♡":`还剩 ${total-placed} 片`;
+      if(navigator.vibrate) navigator.vibrate(18);
+      if(!tray.querySelector(".jig-piece:not(.placed)")) tray.innerHTML='<div class="jig-tray-empty">全部碎片都放上去了 ♡</div>';
+      if(placed===total){
+        board.classList.add("done");
+        const t=setTimeout(()=>success(m),650); timers.push(t);
+      }
+    }
+
+    onJigResize=()=>{
+      if(cancelled) return;
+      pieces.filter(p=>p.placed).forEach(p=>{
+        const cellW=board.clientWidth/cols,cellH=board.clientHeight/rows;
+        p.el.style.width=(cellW*(1+2*tabRatio))+"px";
+        p.el.style.height=(cellH*(1+2*tabRatio))+"px";
+        p.el.style.left=(p.c*cellW-tabRatio*cellW)+"px";
+        p.el.style.top=(p.r*cellH-tabRatio*cellH)+"px";
+      });
+    };
+    window.addEventListener("resize",onJigResize,{passive:true});
+  }
+
+  function drawCover(ctx,img,w,h){
+    const ir=img.naturalWidth/img.naturalHeight, tr=w/h;
+    let sx=0,sy=0,sw=img.naturalWidth,sh=img.naturalHeight;
+    if(ir>tr){sw=img.naturalHeight*tr;sx=(img.naturalWidth-sw)/2;}
+    else{sh=img.naturalWidth/tr;sy=(img.naturalHeight-sh)/2;}
+    ctx.drawImage(img,sx,sy,sw,sh,0,0,w,h);
+  }
+
+  // 不再使用 new Path2D("SVG 路径字符串")，改用 Path2D 原生命令，
+  // 对 iOS Safari / WKWebView 更稳定。
+  function makePiecePath(e,S,T){
+    const x0=T,y0=T,x1=T+S,y1=T+S,d=T;
+    const a=.34*S,b=.44*S,c=.56*S,f=.66*S;
+    const p=new Path2D();
+    p.moveTo(x0,y0);
+    if(!e.top) p.lineTo(x1,y0);
+    else{const yy=y0-e.top*d;p.lineTo(x0+a,y0);p.bezierCurveTo(x0+a,y0,x0+b,yy,x0+S/2,yy);p.bezierCurveTo(x0+c,yy,x0+f,y0,x0+f,y0);p.lineTo(x1,y0);}
+    if(!e.right) p.lineTo(x1,y1);
+    else{const xx=x1+e.right*d;p.lineTo(x1,y0+a);p.bezierCurveTo(x1,y0+a,xx,y0+b,xx,y0+S/2);p.bezierCurveTo(xx,y0+c,x1,y0+f,x1,y0+f);p.lineTo(x1,y1);}
+    if(!e.bottom) p.lineTo(x0,y1);
+    else{const yy=y1+e.bottom*d;p.lineTo(x0+f,y1);p.bezierCurveTo(x0+f,y1,x0+c,yy,x0+S/2,yy);p.bezierCurveTo(x0+b,yy,x0+a,y1,x0+a,y1);p.lineTo(x0,y1);}
+    if(!e.left) p.lineTo(x0,y0);
+    else{const xx=x0-e.left*d;p.lineTo(x0,y0+f);p.bezierCurveTo(x0,y0+f,xx,y0+c,xx,y0+S/2);p.bezierCurveTo(xx,y0+b,x0,y0+a,x0,y0+a);p.lineTo(x0,y0);}
+    p.closePath();
+    return p;
+  }
+}
+
+function startHearts(m){
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta">
+        <b>拿到 18 分</b>
+        <span class="score-chip" id="heartProgress">0 / 18</span>
+      </div>
+      <div id="heartGame" class="heart-game">
+        <div id="blurLayer" class="blur-layer"></div>
+        <div id="heartTimer" class="timer-pill">22s</div>
+        <div id="comboNote" class="combo-note">COMBO ×0</div>
+        <button id="tapHeart" class="tap-heart good">♥</button>
+      </div>
+      <div class="helper" style="margin-top:10px">粉色 +1 · 金色 +2 · 灰色是干扰项（-1，连击清零）</div>
+      <div class="game-actions"><button class="soft-btn" onclick="startHearts(currentMemory)">重新开始</button></div>
+    </div>`;
+  const game=q("heartGame"), layer=q("blurLayer"), heart=q("tapHeart");
+  layer.style.backgroundImage=`url("${m.images[0]}")`;
+  let score=0,sec=22,combo=0,spawnTimer=null,alive=true;
+  const target=18;
+
+  function update(){
+    q("heartProgress").textContent=`${score} / ${target}`;
+    q("comboNote").textContent=`COMBO ×${combo}`;
+    const pct=Math.max(0,Math.min(1,score/target));
+    layer.style.setProperty("--blur",Math.max(0,18-pct*18)+"px");
+  }
+  function chooseType(){
+    const r=Math.random();
+    if(r<.18) return {name:"bonus",text:"💖",points:2};
+    if(r<.34) return {name:"decoy",text:"♡",points:-1};
+    return {name:"good",text:"♥",points:1};
+  }
+  function spawn(){
+    if(!alive) return;
+    const t=chooseType();
+    heart.className=`tap-heart ${t.name}`;
+    heart.textContent=t.text;
+    heart.dataset.points=t.points;
+    const size=Math.round(36+Math.random()*42);
+    heart.style.width=size+"px";
+    heart.style.height=size+"px";
+    heart.style.fontSize=Math.round(size*.5)+"px";
+    const x=Math.random()*Math.max(8,game.clientWidth-size-8);
+    const y=54+Math.random()*Math.max(8,game.clientHeight-size-66);
+    heart.style.left=x+"px"; heart.style.top=y+"px";
+    heart.style.transform=`rotate(${Math.round(-18+Math.random()*36)}deg)`;
+    const life=480+Math.random()*520;
+    spawnTimer=setTimeout(spawn,life);
+    timers.push(spawnTimer);
+  }
+  heart.onclick=()=>{
+    const pts=Number(heart.dataset.points||1);
+    if(pts>0){
+      combo++;
+      const comboBonus=(combo>0 && combo%5===0)?1:0;
+      score+=pts+comboBonus;
+      if(comboBonus) showToast("5 连击 +1");
+    }else{
+      score=Math.max(0,score-1);
+      combo=0;
+      heart.classList.add("miss");
+      setTimeout(()=>heart.classList.remove("miss"),180);
+    }
+    update();
+    if(score>=target){
+      alive=false;
+      clearTimeout(spawnTimer);
+      success(m);
+      return;
+    }
+    clearTimeout(spawnTimer);
+    spawn();
+  };
+  update(); spawn();
+
+  const timer=setInterval(()=>{
+    sec--; q("heartTimer").textContent=sec+"s";
+    if(sec<=0){
+      alive=false;
+      clearInterval(timer); clearTimeout(spawnTimer);
+      q("heartTimer").textContent="TIME UP";
+      heart.disabled=true;
+      setTimeout(()=>startHearts(m),900);
+    }
+  },1000);
+  timers.push(timer);
+}
+
+function startFlip(m){
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta"><b>找到 4 组相同照片局部</b><span id="flipProgress">0 / 4</span></div>
+      <div id="flipGrid" class="flip-grid"></div>
+      <div class="game-actions"><button class="soft-btn" onclick="startFlip(currentMemory)">重新打乱</button></div>
+    </div>`;
+  let deck=[0,0,1,1,2,2,3,3].sort(()=>Math.random()-.5);
+  let first=null, lock=false,matched=0;
+  const grid=q("flipGrid");
+  deck.forEach((val,idx)=>{
+    const card=document.createElement("button");
+    card.className="flip-card";
+    const x=(val%2)*100, y=Math.floor(val/2)*100;
+    card.innerHTML=`<div class="flip-inner">
+      <div class="flip-face flip-back">♡</div>
+      <div class="flip-face flip-front" style='background-image:url("${m.images[0]}");background-size:200% 200%;background-position:${x}% ${y}%'></div>
+    </div>`;
+    card.dataset.value=val; card.dataset.index=idx;
+    card.onclick=()=>flip(card);
+    grid.appendChild(card);
+  });
+  function flip(card){
+    if(lock||card.classList.contains("flipped")||card.classList.contains("matched")) return;
+    card.classList.add("flipped");
+    if(!first){ first=card; return; }
+    if(first.dataset.value===card.dataset.value){
+      first.classList.add("matched"); card.classList.add("matched");
+      first.classList.remove("flipped"); card.classList.remove("flipped");
+      first=null; matched++; q("flipProgress").textContent=`${matched} / 4`;
+      if(matched===4) setTimeout(()=>success(m),300);
+    }else{
+      lock=true;
+      setTimeout(()=>{
+        first.classList.remove("flipped"); card.classList.remove("flipped");
+        first=null; lock=false;
+      },650);
+    }
+  }
+}
+
+
+function startPipes(m){
+  const N=4;
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta"><b>旋转管道，让水流真正到达右边</b><span id="pipeMoves">0 步</span></div>
+      <div id="pipeBoard" class="pipe-board"></div>
+      <div class="helper" style="margin-top:10px">亮起来的格子已经接通入口，把水路一路接到右侧出口即可。</div>
+      <div class="game-actions"><button class="soft-btn" onclick="startPipes(currentMemory)">重新打乱</button></div>
+    </div>`;
+
+  const dirs=["up","right","down","left"];
+  const vec={up:[-1,0],right:[0,1],down:[1,0],left:[0,-1]};
+  const opposite={up:"down",right:"left",down:"up",left:"right"};
+  const board=q("pipeBoard");
+  let moves=0;
+
+  // Generate one guaranteed-solvable route. The player is NOT forced to use
+  // exactly this route: victory below checks actual connectivity with BFS.
+  function makePath(){
+    let r=Math.floor(Math.random()*N), c=0;
+    const path=[[r,c]];
+    for(c=0;c<N-1;c++){
+      let target=Math.max(0,Math.min(N-1,r+[-1,0,1][Math.floor(Math.random()*3)]));
+      while(r!==target){
+        r += target>r ? 1 : -1;
+        path.push([r,c]);
+      }
+      path.push([r,c+1]);
+    }
+    let finalTarget=Math.max(0,Math.min(N-1,r+[-1,0,1][Math.floor(Math.random()*3)]));
+    while(r!==finalTarget){
+      r += finalTarget>r ? 1 : -1;
+      path.push([r,N-1]);
+    }
+    return path;
+  }
+
+  const path=makePath();
+  const startKey=path[0].join(",");
+  const endKey=path[path.length-1].join(",");
+  const pathIndex=new Map(path.map((p,i)=>[p.join(","),i]));
+  const required={};
+
+  path.forEach((p,i)=>{
+    const key=p.join(","), set=[];
+    if(i===0) set.push("left");
+    else{
+      const prev=path[i-1], dr=prev[0]-p[0], dc=prev[1]-p[1];
+      set.push(dr===-1?"up":dr===1?"down":dc===-1?"left":"right");
+    }
+    if(i===path.length-1) set.push("right");
+    else{
+      const next=path[i+1], dr=next[0]-p[0], dc=next[1]-p[1];
+      set.push(dr===-1?"up":dr===1?"down":dc===-1?"left":"right");
+    }
+    required[key]=[...new Set(set)];
+  });
+
+  const distractors=[
+    ["left","right"],["up","down"],["up","right"],["right","down"],
+    ["down","left"],["left","up"],["up","right","down"],["right","down","left"]
+  ];
+  const cells=[];
+  const byKey=new Map();
+
+  function rotateDir(d,rot){ return dirs[(dirs.indexOf(d)+rot)%4]; }
+  function connections(s){ return [...new Set(s.base.map(d=>rotateDir(d,s.rot)))]; }
+
+  for(let r=0;r<N;r++){
+    for(let c=0;c<N;c++){
+      const key=`${r},${c}`;
+      const base=pathIndex.has(key) ? required[key].slice() : distractors[Math.floor(Math.random()*distractors.length)].slice();
+      let rot=Math.floor(Math.random()*4);
+      if(pathIndex.has(key) && rot===0 && Math.random()<.8) rot=1+Math.floor(Math.random()*3);
+      const cell=document.createElement("button");
+      cell.className="pipe-cell";
+      cell.innerHTML=`<div class="pipe-inner">${base.map(d=>`<i class="pipe-arm ${d}"></i>`).join("")}<i class="pipe-core"></i></div>`;
+      if(key===startKey) cell.insertAdjacentHTML("beforeend",`<span class="pipe-entry">▶</span>`);
+      if(key===endKey) cell.insertAdjacentHTML("beforeend",`<span class="pipe-exit">♥</span>`);
+      const state={r,c,key,base,rot,el:cell,inner:cell.querySelector(".pipe-inner")};
+      cells.push(state); byKey.set(key,state);
+      const paint=()=>state.inner.style.transform=`rotate(${state.rot*90}deg)`;
+      cell.onclick=()=>{
+        state.rot=(state.rot+1)%4; moves++;
+        q("pipeMoves").textContent=moves+" 步";
+        paint(); updateFlow();
+      };
+      paint(); board.appendChild(cell);
+    }
+  }
+
+  function reachableFromStart(){
+    const start=byKey.get(startKey);
+    if(!start || !connections(start).includes("left")) return new Set();
+    const seen=new Set([startKey]), queue=[start];
+    while(queue.length){
+      const cur=queue.shift(), con=connections(cur);
+      for(const d of con){
+        const [dr,dc]=vec[d], nr=cur.r+dr, nc=cur.c+dc;
+        if(nr<0||nr>=N||nc<0||nc>=N) continue;
+        const next=byKey.get(`${nr},${nc}`);
+        if(next && connections(next).includes(opposite[d]) && !seen.has(next.key)){
+          seen.add(next.key); queue.push(next);
+        }
+      }
+    }
+    return seen;
+  }
+
+  function updateFlow(){
+    const seen=reachableFromStart();
+    cells.forEach(s=>s.el.classList.toggle("powered",seen.has(s.key)));
+    const end=byKey.get(endKey);
+    if(seen.has(endKey) && connections(end).includes("right")){
+      cells.forEach(s=>s.el.disabled=true);
+      setTimeout(()=>success(m),420);
+    }
+  }
+  updateFlow();
+}
+
+function startSequence(m){
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta"><b>记住 3×3 照片区域的闪烁顺序</b><span id="seqLabel">ROUND 1 / 4</span></div>
+      <div id="memorySeq" class="memory-seq"></div>
+      <div class="seq-status"><i class="seq-dot"></i><i class="seq-dot"></i><i class="seq-dot"></i><i class="seq-dot"></i></div>
+      <div style="display:flex;justify-content:space-between;margin-top:9px"><span class="helper">4 → 5 → 6 → 7 个位置，速度会越来越快</span><span id="seqLives" class="seq-lives">失误 0 / 2</span></div>
+      <div class="game-actions"><button class="soft-btn" onclick="startSequence(currentMemory)">重新开始</button></div>
+    </div>`;
+
+  const root=q("memorySeq");
+  const dots=[...document.querySelectorAll(".seq-dot")];
+  const lengths=[4,5,6,7], speeds=[540,470,410,360];
+  let round=0, seq=[], input=[], locked=true, mistakes=0;
+
+  for(let i=0;i<9;i++){
+    const tile=document.createElement("button");
+    tile.className="seq-tile";
+    tile.style.backgroundImage=`url("${m.images[0]}")`;
+    tile.style.backgroundPosition=`${(i%3)*50}% ${Math.floor(i/3)*50}%`;
+    tile.onclick=()=>tap(i,tile);
+    root.appendChild(tile);
+  }
+  const tiles=[...root.children];
+  function flash(i,on){ tiles[i].classList.toggle("flash",on); }
+  function makeSeq(len){
+    const s=[];
+    while(s.length<len){
+      const v=Math.floor(Math.random()*9);
+      if(v!==s[s.length-1]) s.push(v);
+    }
+    return s;
+  }
+  function playRound(reuse=false){
+    locked=true; input=[];
+    q("seqLabel").textContent=`ROUND ${round+1} / 4`;
+    if(!reuse) seq=makeSeq(lengths[round]);
+    const gap=speeds[round], on=Math.max(190,gap*.48), delay=350;
+    seq.forEach((idx,k)=>{
+      const a=setTimeout(()=>flash(idx,true),delay+k*gap);
+      const b=setTimeout(()=>flash(idx,false),delay+k*gap+on);
+      timers.push(a,b);
+    });
+    const unlock=setTimeout(()=>{ locked=false; showToast("轮到你了"); },delay+seq.length*gap+80);
+    timers.push(unlock);
+  }
+  function tap(i,tile){
+    if(locked) return;
+    const pos=input.length;
+    tile.classList.add("flash");
+    setTimeout(()=>tile.classList.remove("flash"),120);
+    if(i!==seq[pos]){
+      locked=true; mistakes++;
+      q("seqLives").textContent=`失误 ${mistakes} / 2`;
+      if(mistakes>=3){
+        showToast("失误达到 3 次，从第一轮重新来");
+        round=0; mistakes=0; dots.forEach(d=>d.classList.remove("done"));
+        q("seqLives").textContent="失误 0 / 2";
+        const t=setTimeout(()=>playRound(false),900); timers.push(t);
+      }else{
+        showToast("顺序不对，这一轮再看一次");
+        const t=setTimeout(()=>playRound(true),800); timers.push(t);
+      }
+      return;
+    }
+    input.push(i);
+    if(input.length===seq.length){
+      locked=true; dots[round].classList.add("done"); round++;
+      if(round>=4) setTimeout(()=>success(m),350);
+      else{
+        showToast("正确 ✓ 下一轮更快");
+        const t=setTimeout(()=>playRound(false),650); timers.push(t);
+      }
+    }
+  }
+  const start=setTimeout(()=>playRound(false),450); timers.push(start);
+}
+
+function startDifference(m){
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta"><b>找出 5 处真正的局部变化</b><span id="diffProgress">0 / 5</span></div>
+      <div class="diff-wrap">
+        <div class="diff-canvas-wrap"><span class="diff-label">ORIGINAL</span><canvas id="diffLeft" width="360" height="480"></canvas></div>
+        <div class="diff-canvas-wrap"><span class="diff-label">CHANGED</span><canvas id="diffRight" width="360" height="480"></canvas></div>
+      </div>
+      <div class="helper" style="margin-top:10px">现在不是点小图标：右图会出现颜色、明暗、模糊或局部翻转等变化。两边都可以点，而且点击判定范围比变化本身大。</div>
+      <div class="game-actions"><button class="soft-btn" onclick="startDifference(currentMemory)">重新生成</button></div>
+    </div>`;
+
+  const left=q("diffLeft"), right=q("diffRight");
+  const lctx=left.getContext("2d"), rctx=right.getContext("2d");
+  const W=left.width,H=left.height;
+  const img=new Image();
+  let source=null, diffs=[], found=0;
+
+  function drawCover(ctx,image){
+    const scale=Math.max(W/image.width,H/image.height);
+    const sw=W/scale, sh=H/scale, sx=(image.width-sw)/2, sy=(image.height-sh)/2;
+    ctx.clearRect(0,0,W,H); ctx.drawImage(image,sx,sy,sw,sh,0,0,W,H);
+  }
+  function chooseDiffs(){
+    const arr=[];
+    while(arr.length<5){
+      const p={x:58+Math.random()*(W-116),y:70+Math.random()*(H-140),r:24+Math.random()*10,type:arr.length%5,found:false};
+      if(arr.every(o=>Math.hypot(o.x-p.x,o.y-p.y)>76)) arr.push(p);
+    }
+    return arr;
+  }
+  function applyChanges(){
+    rctx.clearRect(0,0,W,H); rctx.drawImage(source,0,0);
+    diffs.forEach((d,i)=>{
+      rctx.save();
+      rctx.beginPath(); rctx.arc(d.x,d.y,d.r,0,Math.PI*2); rctx.clip();
+      if(d.type===0){
+        rctx.fillStyle="rgba(255,75,140,.22)"; rctx.fillRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2);
+      }else if(d.type===1){
+        rctx.filter="blur(4px) saturate(1.35)"; rctx.drawImage(source,0,0);
+      }else if(d.type===2){
+        rctx.fillStyle="rgba(255,255,255,.25)"; rctx.fillRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2);
+      }else if(d.type===3){
+        rctx.translate(2*d.x,0); rctx.scale(-1,1); rctx.drawImage(source,0,0);
+      }else{
+        rctx.globalCompositeOperation="multiply"; rctx.fillStyle="rgba(120,90,190,.18)"; rctx.fillRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2);
+      }
+      rctx.restore();
+    });
+  }
+  function redrawFound(){
+    lctx.clearRect(0,0,W,H); lctx.drawImage(source,0,0);
+    applyChanges();
+    diffs.filter(d=>d.found).forEach(d=>{
+      [lctx,rctx].forEach(ctx=>{
+        ctx.save(); ctx.strokeStyle="#ff5f96"; ctx.lineWidth=5; ctx.beginPath(); ctx.arc(d.x,d.y,d.r+9,0,Math.PI*2); ctx.stroke(); ctx.restore();
+      });
+    });
+  }
+  function clickCanvas(ev,canvas){
+    if(!source) return;
+    const rect=canvas.getBoundingClientRect();
+    const x=(ev.clientX-rect.left)*W/rect.width, y=(ev.clientY-rect.top)*H/rect.height;
+    let best=null,bestD=Infinity;
+    diffs.forEach(d=>{
+      if(d.found) return;
+      const dist=Math.hypot(d.x-x,d.y-y);
+      if(dist<d.r+22 && dist<bestD){ best=d; bestD=dist; }
+    });
+    if(best){
+      best.found=true; found++; q("diffProgress").textContent=`${found} / 5`; redrawFound();
+      if(found===5) setTimeout(()=>success(m),350);
+    }else showToast("这里没有变化");
+  }
+  left.addEventListener("click",ev=>clickCanvas(ev,left));
+  right.addEventListener("click",ev=>clickCanvas(ev,right));
+  img.onload=()=>{
+    drawCover(lctx,img);
+    source=document.createElement("canvas"); source.width=W; source.height=H; source.getContext("2d").drawImage(left,0,0);
+    diffs=chooseDiffs(); redrawFound();
+  };
+  img.src=m.images[0];
+}
+
+function startSwap(m){
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta"><b>交换碎片，把照片拼回原样</b><span id="swapMoves">0 步</span></div>
+      <div id="swapGrid" class="swap-grid"></div>
+      <div class="helper" style="margin-top:10px">先点一块，再点另一块，两块会交换位置。没有空格限制。</div>
+      <div class="game-actions"><button class="soft-btn" onclick="startSwap(currentMemory)">重新打乱</button></div>
+    </div>`;
+  let arr=[0,1,2,3,4,5,6,7,8];
+  do{ arr.sort(()=>Math.random()-.5); }while(arr.every((v,i)=>v===i));
+  let selected=null,moves=0;
+  const root=q("swapGrid");
+  function render(){
+    root.innerHTML="";
+    arr.forEach((piece,pos)=>{
+      const b=document.createElement("button"); b.className="swap-tile";
+      b.style.backgroundImage=`url("${m.images[0]}")`;
+      b.style.backgroundPosition=`${(piece%3)*50}% ${Math.floor(piece/3)*50}%`;
+      if(selected===pos) b.classList.add("selected");
+      b.onclick=()=>pick(pos); root.appendChild(b);
+    });
+    q("swapMoves").textContent=moves+" 步";
+  }
+  function pick(pos){
+    if(selected===null){ selected=pos; render(); return; }
+    if(selected===pos){ selected=null; render(); return; }
+    [arr[selected],arr[pos]]=[arr[pos],arr[selected]]; moves++; selected=null; render();
+    if(arr.every((v,i)=>v===i)) setTimeout(()=>success(m),280);
+  }
+  render();
+}
+
+function startMaze(m){
+  q("gameContent").innerHTML=`
+    <div class="game-frame">
+      <div class="game-meta"><b>把 ♥ 从左上带到右下</b><span id="mazeMoves">0 步</span></div>
+      <canvas id="mazeCanvas" class="maze-canvas" width="420" height="420"></canvas>
+      <div class="helper" style="margin-top:9px;text-align:center">可以用方向键，也可以直接在迷宫上滑动。</div>
+      <div class="dpad">
+        <span class="empty-pad"></span><button onclick="mazeMove('up')">↑</button><span class="empty-pad"></span>
+        <button onclick="mazeMove('left')">←</button><button onclick="mazeMove('down')">↓</button><button onclick="mazeMove('right')">→</button>
+      </div>
+      <div class="game-actions"><button class="soft-btn" onclick="startMaze(currentMemory)">重新生成迷宫</button></div>
+    </div>`;
+  const canvas=q("mazeCanvas"),ctx=canvas.getContext("2d"),N=7,S=canvas.width/N;
+  const cells=Array.from({length:N*N},(_,i)=>({r:Math.floor(i/N),c:i%N,walls:{up:1,right:1,down:1,left:1},seen:false}));
+  const at=(r,c)=>cells[r*N+c], dirs={up:[-1,0,"down"],right:[0,1,"left"],down:[1,0,"up"],left:[0,-1,"right"]};
+  const stack=[at(0,0)]; stack[0].seen=true;
+  while(stack.length){
+    const cur=stack[stack.length-1], opts=[];
+    Object.entries(dirs).forEach(([name,[dr,dc,opp]])=>{
+      const nr=cur.r+dr,nc=cur.c+dc;
+      if(nr>=0&&nr<N&&nc>=0&&nc<N&&!at(nr,nc).seen) opts.push([name,nr,nc,opp]);
+    });
+    if(!opts.length){ stack.pop(); continue; }
+    const [name,nr,nc,opp]=opts[Math.floor(Math.random()*opts.length)], next=at(nr,nc);
+    cur.walls[name]=0; next.walls[opp]=0; next.seen=true; stack.push(next);
+  }
+  cells.forEach(c=>c.seen=false);
+  let player={r:0,c:0},moves=0,img=new Image(),imgReady=false,visited=new Set(["0,0"]);
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(imgReady){
+      const scale=Math.max(canvas.width/img.width,canvas.height/img.height), sw=canvas.width/scale, sh=canvas.height/scale;
+      ctx.globalAlpha=.52; ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,canvas.width,canvas.height); ctx.globalAlpha=1;
+    }else{ ctx.fillStyle="#fff0f5"; ctx.fillRect(0,0,canvas.width,canvas.height); }
+    cells.forEach(cell=>{
+      const x=cell.c*S,y=cell.r*S;
+      if(!visited.has(`${cell.r},${cell.c}`)){ ctx.fillStyle="rgba(255,255,255,.50)"; ctx.fillRect(x,y,S,S); }
+      ctx.strokeStyle="#e8759d"; ctx.lineWidth=4; ctx.lineCap="round"; ctx.beginPath();
+      if(cell.walls.up){ctx.moveTo(x,y);ctx.lineTo(x+S,y)}
+      if(cell.walls.right){ctx.moveTo(x+S,y);ctx.lineTo(x+S,y+S)}
+      if(cell.walls.down){ctx.moveTo(x,y+S);ctx.lineTo(x+S,y+S)}
+      if(cell.walls.left){ctx.moveTo(x,y);ctx.lineTo(x,y+S)}
+      ctx.stroke();
+    });
+    ctx.font=`${S*.42}px system-ui`; ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillText("★",(N-.5)*S,(N-.5)*S);
+    ctx.font=`${S*.48}px system-ui`; ctx.fillText("♥",(player.c+.5)*S,(player.r+.52)*S);
+  }
+  window.mazeMove=(dir)=>{
+    const cur=at(player.r,player.c); if(cur.walls[dir]) return;
+    const [dr,dc]=dirs[dir]; player={r:player.r+dr,c:player.c+dc}; moves++; q("mazeMoves").textContent=moves+" 步";
+    visited.add(`${player.r},${player.c}`); draw();
+    if(player.r===N-1&&player.c===N-1){ delete window.mazeMove; setTimeout(()=>success(m),300); }
+  };
+  let sx=0,sy=0;
+  canvas.addEventListener("pointerdown",e=>{sx=e.clientX;sy=e.clientY});
+  canvas.addEventListener("pointerup",e=>{
+    const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<18) return;
+    mazeMove(Math.abs(dx)>Math.abs(dy)?(dx>0?"right":"left"):(dy>0?"down":"up"));
+  });
+  img.onload=()=>{imgReady=true;draw()}; img.src=m.images[0]; draw();
+}
+
+function showReveal(m,justCleared){
+  const idx=data.memories.findIndex(x=>x.id===m.id)+1;
+  q("revealContent").innerHTML=`
+    <div class="eyebrow">${justCleared?"STAGE CLEAR":"MEMORY "+String(idx).padStart(2,"0")}</div>
+    <div class="clear-title">${justCleared?"CLEAR!":"♡"}</div>
+    <div class="reveal-photo"><img src="${m.images[0]}" alt=""></div>
+    <div style="padding:14px 6px 4px">
+      <div class="clear-meta">${esc(m.title||"这一段回忆")}</div>
+      <div class="muted" style="font-size:13px;margin-top:4px">${[m.date,m.place].filter(Boolean).map(esc).join(" · ")}</div>
+      ${m.note?`<div class="clear-note">“${esc(m.note)}”</div>`:`<div style="height:12px"></div>`}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <button class="soft-btn" onclick="closeReveal();openStages()">关卡选择</button>
+        <button class="primary-btn" onclick="closeReveal();openBook()">看照片书</button>
+      </div>
+    </div>`;
+  q("revealModal").classList.remove("hide");
+  updateHome();
+}
+function closeReveal(){ q("revealModal").classList.add("hide"); renderStages(); }
+
+function renderBook(){
+  q("bookTitleView").textContent=data.title||"我们的见面存档";
+  const unlocked=data.memories.filter(m=>progress[m.id]).slice().sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
+  if(!unlocked.length){
+    q("bookPages").innerHTML=`<section class="panel empty">还没有解锁的照片。先完成一个小游戏吧 ♡</section>`;
+    return;
+  }
+  q("bookPages").innerHTML=unlocked.map((m,i)=>{
+    const imgs=(m.images||[]).slice(0,4);
+    return `<article class="book-page">
+      <div class="photo-grid count-${imgs.length}">
+        ${imgs.map(src=>`<img src="${src}" alt="">`).join("")}
+      </div>
+      <div class="page-caption">
+        <div class="date">${esc(m.date||"")}${m.place?` · ${esc(m.place)}`:""}</div>
+        <h3>${esc(m.title||`Memory ${i+1}`)}</h3>
+        ${m.note?`<p>${esc(m.note)}</p>`:""}
+      </div>
+    </article>`;
+  }).join("");
+}
+
+loadAll();
+initCloud();
+</script>
+</body>
+</html>
